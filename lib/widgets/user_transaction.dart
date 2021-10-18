@@ -23,6 +23,7 @@ class _UserTransactionState extends State<UserTransaction> {
         new Transaction(2, title, int.parse(amount), DateTime.now());
     setState(() {
       _userTransactions.add(transaction);
+
     });
   }
 
