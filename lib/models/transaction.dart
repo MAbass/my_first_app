@@ -1,10 +1,17 @@
 import 'package:flutter/foundation.dart';
 
 class Transaction {
-  int id;
-  String title;
-  int amount;
-  DateTime dateTime;
+  late int id;
+  late String title;
+  late int amount;
+  late DateTime dateTime;
+  static int increment = 0;
 
-  Transaction(@required this.id, @required this.title, @required this.amount, @required this.dateTime);
+  Transaction(@required String title,@required int amount,@required DateTime dateTime){
+    this.id = increment++;
+    this.title = title;
+    this.amount = amount;
+    this.dateTime = dateTime;
+    this.title = title;
+  }
 }

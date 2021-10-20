@@ -1,13 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   final Function addTx;
+
   // String titleInput = "";
   // String amountTitle = "";
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+
   NewTransaction(this.addTx);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
+
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      return;
+    }
+    widget.addTx(titleController.text, amountController.text);
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,22 +40,21 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: "Title"),
               controller: titleController,
+              // onSubmitted: (_) => submitData(),
               //onChanged: (value) {titleInput = value;},
             ),
             TextField(
               decoration: InputDecoration(labelText: "Price"),
               controller: amountController,
-
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) => submitData(),
               // onChanged: (value) {amountTitle = value;}
             ),
-            FlatButton(
-              onPressed: () {
-                addTx(titleController.text, amountController.text);
-              },
-              child: Text("Add transaction"),
-              textColor: Colors.purple,
-              padding: EdgeInsets.all(5),
-            )
+            TextButton(
+                onPressed: () => submitData,
+                child: Text("Add transaction"),
+                style: TextButton.styleFrom(
+                    primary: Colors.green, padding: EdgeInsets.all(10)))
           ],
         ),
       ),
