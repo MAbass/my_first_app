@@ -31,25 +31,39 @@ class ChartWidget extends StatelessWidget {
     return list_of_couple;
   }
 
+  String getRateOfBuy(String label) {
+    int total = 0;
+    var spendInThisWeek = groupedTransactionsValues();
+    spendInThisWeek.keys.forEach((e) {
+      total = total + spendInThisWeek[e]!;
+    });
+    double result = spendInThisWeek[label]! / total;
+    return result.toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     var variable = groupedTransactionsValues();
-    print(variable);
-    return Container(
-      color: Colors.red,
-      height: 180,
-      child: Card(
-        elevation: 6,
-        margin: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionsValues().entries.map((e) {
-            var spendingAmount = e.value;
-            var label = e.key;
-            return ChartBar(label, spendingAmount);
-          }).toList(),
-        ),
-      ),
-    );
+    return transactions.isEmpty
+        ? Text("We don't have a barchart because not transactions yet!",textAlign: TextAlign.center,)
+        : Container(
+            height: 180,
+            child: Card(
+              elevation: 6,
+              margin: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: groupedTransactionsValues().entries.map((e) {
+                  var spendingAmount = e.value;
+                  var label = e.key;
+                  return Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(label, spendingAmount,
+                        double.parse(getRateOfBuy(label))),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
   }
 }

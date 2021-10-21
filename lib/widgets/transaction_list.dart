@@ -4,8 +4,9 @@ import 'package:my_first_app/models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  Function _deleteTransactions;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this._deleteTransactions);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +15,12 @@ class TransactionList extends StatelessWidget {
             children: [
               Text("No transactions added yet!!"),
               Container(
-                margin: EdgeInsets.all(20),
+                  margin: EdgeInsets.all(20),
                   child: Image.asset(
-                "assets/images/waiting.png",
-                fit: BoxFit.cover,
-                width: 300,
-              ))
+                    "assets/images/waiting.png",
+                    fit: BoxFit.cover,
+                    width: 300,
+                  ))
             ],
           )
         : Container(
@@ -27,39 +28,28 @@ class TransactionList extends StatelessWidget {
             child: ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(6)),
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
-                        width: 100,
-                        child: Text(
-                          "${transactions[index].amount} Fcfa",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  elevation: 5,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: FittedBox(
+                            child: Text("${transactions[index].amount} Fcfa")),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${transactions[index].title}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                          Text(
-                              new DateFormat('yyyy-mm-dd')
-                                  .format(transactions[index].dateTime),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 15))
-                        ],
-                      )
-                    ],
+                    ),
+                    title: Text(
+                      '${transactions[index].title}',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    subtitle: Text(
+                        "${DateFormat.yMMMMd().format(transactions[index].dateTime)}"),
+                    trailing: IconButton(
+                      onPressed: () => _deleteTransactions(transactions[index].id),
+                      icon: Icon(Icons.delete, color: Colors.red),
+                    ),
                   ),
                 );
               },

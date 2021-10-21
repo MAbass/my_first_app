@@ -16,8 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter App',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          colorScheme: ColorScheme.dark(secondary: Colors.red)),
+          primarySwatch: Colors.blue),
       home: MyHomePage(),
     );
   }
@@ -38,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction('New clothes', 900, new DateTime(2021, 10, 01)),
   ];
 
-  void startAddNewTransaction(BuildContext context) {
+  void startAddNewTransaction() {
     showModalBottomSheet(
         context: context,
         builder: (_) {
@@ -53,6 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
       _userTransactions.add(transaction);
     });
   }
+  void _deleteTransactions(int id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('Flutter App'),
         actions: [
           IconButton(
-              onPressed: () => startAddNewTransaction(context),
+              onPressed: startAddNewTransaction,
               icon: Icon(Icons.add))
         ],
       ),
@@ -71,12 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ChartWidget(_userTransactions),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransactions),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => startAddNewTransaction(context),
+        onPressed: startAddNewTransaction,
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
