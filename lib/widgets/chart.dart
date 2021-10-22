@@ -43,11 +43,9 @@ class ChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var variable = groupedTransactionsValues();
     return transactions.isEmpty
         ? Text("We don't have a barchart because not transactions yet!",textAlign: TextAlign.center,)
         : Container(
-            height: 180,
             child: Card(
               elevation: 6,
               margin: EdgeInsets.all(10),
